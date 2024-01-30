@@ -1,58 +1,8 @@
-class Cicle {
-    nom;
-    categoria;
-    numAlumnes;
-    abreviatura;
-    numEdicions;
-    dataUtimEdicio;
-    moduls;
-    horesTotals;
-    constructor(nom, categoria, numAlumnes, abreviatura) {
-        this.nom = nom;
-        this.categoria = categoria;
-        this.numAlumnes = numAlumnes;
-        this.abreviatura = abreviatura;
-        this.numEdicions = 0;
-        this.moduls = [];
-        this.horesTotals = 0;
-    }
+import {Cicle} from './cicle.js';
+//Afegir els addEventListener per als altres botons
+document.getElementById("btnAfegirCicle").addEventListener("click", afegirCicle);
+document.getElementById("btnAfegirModul").addEventListener("click", afegirModul);
 
-    setNumEdicions() {
-        let date = new Date();              
-        this.dataUtimEdicio = date.getDate() + "/"+ (date.getMonth()+1)+"/"+date.getFullYear();
-        this.numEdicions = this.numEdicions + 1;
-        //this.toString();
-        console.log(`Última modificació: ${this.dataUtimEdicio}. Total modificacions: ${this.numEdicions}`);
-    }
-    toString() {
-        console.log(
-            "Cicle: "+this.nom+
-            "\nCategoria: "+this.categoria+
-            "\nAlumnes: "+this.numAlumnes+
-            "\nAbreviatura: "+this.abreviatura+
-            "\nModuls: "+JSON.stringify(this.moduls, null, 2)
-        );
-    }
-    afegirModulAlCicle(modul) {
-        this.moduls.push(modul);
-        this.orderByNumModuls();
-        this.calcularHoresCicle();
-        console.log(this.moduls);
-    }
-    orderByNumModuls() {
-        this.moduls.sort(function(a,b) {
-            if (a.num>b.num) {return 1};
-            if (a.num<b.num) {return -1};
-            return 0;
-        })
-        return this.moduls;
-    }
-    calcularHoresCicle() {
-        this.moduls.forEach(element => {
-            this.horesTotals = this.horesTotals + parseInt(element.hores, 10); //sistema decimal
-        })
-    }
-}
 class Modul {
     cicle;
     nom;
@@ -138,15 +88,21 @@ function printLlistat (llistat){
                     <h6 class="text-gray-700">${element.categoria}</h6>
                     <p class="font-normal text-gray-700">Num d'alumnes: ${element.numAlumnes}</p>
 
-                    <button type="button" onClick="removeCicle(${index})" class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2">Eliminar</button>
-                    <button type="button" onClick="editCicle(${index})" class="focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2">Editar</button>
-                    <button type="button" onClick="calculHores(${index})" class="focus:outline-none text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2">Càlcul hores</button>
+                    <button type="button" id="btnEliminar-${index}"  class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2">Eliminar</button>
+                    <button type="button" id="btnEdit-${index}" class="focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2">Editar</button>
+                    <button type="button" id="btnCalc-${index}" class="focus:outline-none text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2">Càlcul hores</button>
 
 
                 </div>`;
+                
     });
 
     document.getElementById("llistat").innerHTML=str;
+    llistat.forEach(function(element, index){
+        document.getElementById(`btnEliminar-${index}`).addEventListener("click", () => removeCicle(index));
+        document.getElementById(`btnEdit-${index}`).addEventListener("click", () => editCicle(index));
+        document.getElementById(`btnCalc-${index}`).addEventListener("click", () => calculHores(index));
+    });
 }
 
 //Funció per actualitzar el selector de cicles cada vegada que afegim un cicle
