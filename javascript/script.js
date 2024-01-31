@@ -1,26 +1,11 @@
 import {Cicle} from './cicle.js';
-//Afegir els addEventListener per als altres botons
+import {Modul} from './modul.js';
+
+//Afegir els addEventListener estatics
 document.getElementById("btnAfegirCicle").addEventListener("click", afegirCicle);
 document.getElementById("btnAfegirModul").addEventListener("click", afegirModul);
 
-class Modul {
-    cicle;
-    nom;
-    num;
-    hores;
-    constructor(cicle, nom, num, hores) {
-        this.cicle = cicle;
-        this.nom = nom;
-        this.num = num;
-        this.hores = hores;
-    }
-    toString() {
-        console.log(
-            `MP ${this.num}. ${this.nom}(${this.hores}h)`
-        );
-    }
-}
-//---------------------------------------------------------------
+
 let llistatCicles = [];
 function calculHores(index) {
     alert("Hores totals: "+llistatCicles[index].horesTotals);
@@ -98,6 +83,7 @@ function printLlistat (llistat){
     });
 
     document.getElementById("llistat").innerHTML=str;
+    //afegir eventListener dinamics
     llistat.forEach(function(element, index){
         document.getElementById(`btnEliminar-${index}`).addEventListener("click", () => removeCicle(index));
         document.getElementById(`btnEdit-${index}`).addEventListener("click", () => editCicle(index));
